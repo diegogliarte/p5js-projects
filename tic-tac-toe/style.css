@@ -5,3 +5,15 @@ html, body {
 canvas {
   display: block;
 }
+
+#main-container {
+  margin: 64px;
+  display: flex;
+  justify-content: center;
+}
+
+#secondary-container {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+}
