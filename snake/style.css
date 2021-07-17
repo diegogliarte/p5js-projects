@@ -1,26 +1,25 @@
 :root {
-  --black: #222831;
-  --white: #DDDDDD;
+    --black: #222831;
+    --white: #DDDDDD;
 }
 
-
 html, body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--black)
+    margin: 0;
+    padding: 0;
+    background-color: var(--black)
 }
 
 canvas {
-  display: block;
-  background-color: var(--white)
+    display: block;
+    background-color: var(--white)
 }
 
 #main-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 #secondary-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
