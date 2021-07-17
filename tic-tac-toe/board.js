@@ -4,6 +4,7 @@ class Board {
         this.columns = dimensions
         this.gameManager = gameManager
         this.board = this.createBoard()
+        this.size = width / this.columns
     }
 
     createBoard() {
@@ -19,7 +20,7 @@ class Board {
     }
 
     drawBoard() {
-        stroke("black")
+        stroke("#222831")
         for (let i = 1; i < this.rows; i++) {
             line(0, height / this.rows * i, width, height / this.rows * i)
         }
@@ -52,8 +53,8 @@ class Board {
         let length = width / this.columns * 0.75
         let weight = 10
 
-        let x = index_x * width / this.columns + sqrt(length ** 2 / 4)
-        let y = index_y * height / this.columns + sqrt(length ** 2 / 4)
+        let x = index_x * width / this.columns + this.size / 4
+        let y = index_y * height / this.columns + this.size / 4
         translate(x, y)
         rotate(45)
         rect(0, 0, length, weight)
@@ -102,6 +103,33 @@ class Board {
         return true
     }
 
+    checkHorizontalCounter(y, followed) {
+        let counter = 0
+        for (let i = 1; i < this.columns; i++) {
+            if (counter == followed) {
+                return true
+            }
+            if (this.board[y][i] == null || this.board[y][i] != this.board[y][i - 1]) {
+                return false
+            }
+
+        }
+        return true
+    }
+
+    checkVerticalCounter(x, followed) {
+        let counter = 0
+        for (let i = 1; i < this.rows; i++) {
+            if (counter == followed) {
+                return true
+            }
+            if (this.board[i][x] == null || this.board[i][x] != this.board[i - 1][x]) {
+                return false
+            }
+        }
+        return true
+    }
+
     checkVertical(x) {
         for (let i = 1; i < this.rows; i++) {
             if (this.board[i][x] == null || this.board[i][x] != this.board[i - 1][x]) {
@@ -112,19 +140,25 @@ class Board {
     }
 
     checkDiagonal() {
-        let diagonal_a = true
-        let diagonal_b = true
+        return this.checkDiagonalPositive() || this.checkDiagonalNegative()
+    }
+
+    checkDiagonalPositive() {
         for (let i = 1; i < this.rows; i++) {
             if (this.board[i][i] == null || this.board[i][i] != this.board[i - 1][i - 1]) {
-                diagonal_a = false
+                return false
             }
         }
+        return true
+    }
+
+    checkDiagonalNegative() {
         for (let i = 1; i < this.rows; i++) {
             if (this.board[i][this.rows - i - 1] == null || this.board[i][this.rows - i - 1] != this.board[i - 1][this.rows - i]) {
-                diagonal_b = false
+                return false
             }
         }
-        return diagonal_a || diagonal_b
+        return true
     }
 
 }

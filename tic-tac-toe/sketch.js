@@ -7,6 +7,7 @@ function setup() {
     textAlign(CENTER)
     textFont("Encode Sans SC")
     angleMode(DEGREES)
+    ai = new AI(true)
     startGame()
 }
 
@@ -56,8 +57,7 @@ function mouseClicked() {
 function startGame() {
     board = new Board(3)
     gameManager = new GameManager(board)
-    ai = new AI(true, board)
-
+    ai.setBoard(board)
 }
 
 function drawText(message) {

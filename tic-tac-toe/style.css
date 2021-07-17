@@ -6,7 +6,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: var(--black)
+    background-color: var(--black);
 }
 
 canvas {
@@ -14,9 +14,19 @@ canvas {
 }
 
 #main-container {
-    margin: 64px;
+    top: 100px;
+    margin: 128px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    color: var(--white);
+    font-size: 32px;
+    font-family: "Encode Sans SC";
+}
+
+#toggle-ai {
+    color: #346751;
+    cursor: pointer;
 }
 
 #secondary-container {
