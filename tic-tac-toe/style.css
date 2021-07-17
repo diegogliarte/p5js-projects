@@ -21,7 +21,7 @@ canvas {
     justify-content: center;
     color: var(--white);
     font-size: 32px;
-    font-family: "Encode Sans SC";
+    font-family: "Encode Sans SC", serif;
 }
 
 #toggle-ai {

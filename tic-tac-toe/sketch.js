@@ -3,6 +3,8 @@ function setup() {
     let x = (windowWidth - width) / 2;
     let y = (windowHeight - height) / 2;
     canvas.position(x, y)
+    mouseX = -1
+    mouseY = -1
     textSize(32)
     textAlign(CENTER)
     textFont("Encode Sans SC")

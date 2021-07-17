@@ -1,7 +1,46 @@
+:root {
+    --black: #222831;
+    --white: #DDDDDD;
+}
+
 html, body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    background-color: var(--black)
 }
+
 canvas {
-  display: block;
+    display: block;
 }
+
+#main-container {
+    top: 100px;
+    margin: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    color: var(--white);
+    font-size: 32px;
+    font-family: "Encode Sans SC", serif;
+}
+
+#easy, #medium, #hard {
+    cursor: pointer;
+}
+
+#easy {
+    color: #346751;
+}
+
+#medium {
+    color: #925E53;
+}
+
+#hard {
+    color: #F05454;
+}
+
+
+
+

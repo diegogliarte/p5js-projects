@@ -3,8 +3,6 @@ function setup() {
     let x = (windowWidth - width) / 2
     let y = (windowHeight - height) / 2
     canvas.position(x, y)
-    textSize(32)
-    textAlign(CENTER)
     textFont("Encode Sans SC")
     text("", 0, 0) // I don't know why but the first text displayed doesn't have the font, so we first display this one
     // Since I Pause the game when the image is show, I need to do this
