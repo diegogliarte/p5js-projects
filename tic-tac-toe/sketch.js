@@ -1,8 +1,7 @@
 function setup() {
     let canvas = createCanvas(500, 500)
     let x = (windowWidth - width) / 2;
-    let y = (windowHeight - height) / 2;
-    canvas.position(x, y)
+    canvas.position(x, canvas.y)
     mouseX = -1
     mouseY = -1
     textSize(32)

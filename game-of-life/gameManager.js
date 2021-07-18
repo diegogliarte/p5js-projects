@@ -1,15 +1,15 @@
 class GameManager {
-  constructor() {
-    this.states = {
-      RUNNING: 0,
-      PAUSED: 1,
+    constructor() {
+        this.states = {
+            RUNNING: 0,
+            PAUSED: 1,
+        }
+        this.state = this.states.PAUSED
+
     }
-    this.state = this.states.PAUSED
-    
-  }
-  
-  changeState(state) {
+
+    changeState(state) {
         this.state = state
-  }
-  
+    }
+
 }
