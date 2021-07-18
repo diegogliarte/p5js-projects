@@ -25,15 +25,10 @@ class Cell {
 
     update(cells, toUpdate) {
         let neighbors = this.countNeighbors(cells)
-        // if (this.isAlive()) {
-        //   print(this, neighbors)
-        // }
         if (!this.isAlive() && neighbors == 3) {
             toUpdate.push([this, true])
-        } else if (neighbors != 2 && neighbors != 3) {
+        } else if (this.isAlive() && neighbors != 2 && neighbors != 3) {
             toUpdate.push([this, false])
-        } else {
-            toUpdate.push([this, this.isAlive()])
         }
     }
 
@@ -53,7 +48,8 @@ class Cell {
 
     draw() {
         if (this.isAlive()) {
-            fill("black")
+            fill("#222831")
+            noStroke()
         } else {
             stroke("#222831")
             noFill()

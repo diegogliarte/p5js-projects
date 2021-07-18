@@ -1,19 +1,25 @@
+var canvasY
+
 function setup() {
+    listeners()
     startGame(20)
 }
 
 function draw() {
     background(200)
-    board.drawCells()
     switch (gameManager.state) {
         case gameManager.states.RUNNING:
-            board.updateCells()
+            if(!board.updateCells()) {
+                stopSimulation()
+            }
             break
         case gameManager.states.PAUSED:
             if (mouseIsPressed) {
                 pressingMouse()
             }
     }
+    board.drawCells()
+
 }
 
 function pressingMouse() {
@@ -25,36 +31,70 @@ function pressingMouse() {
     }
 }
 
-function keyPressed() {
-    if (key.toUpperCase() == 'P') {
-        frameRate(144)
-        gameManager.changeState(gameManager.states.PAUSED)
-    } else if (key.toUpperCase() == 'R') {
-        frameRate(10)
+function listeners() {
+    let play = document.getElementById("play")
+    let nextFrame = document.getElementById("next-frame")
+    let clearBoard = document.getElementById("clear-board")
+
+    play.addEventListener("click", e => {
+        loop()
+        if (gameManager.state == gameManager.states.RUNNING) {
+            stopSimulation(play)
+
+        } else {
+            play.innerText = "Click to stop"
+            play.style.color = "#F05454"
+            frameRate(int(sliderSpeed.value))
+            gameManager.changeState(gameManager.states.RUNNING)
+        }
+    })
+
+    nextFrame.addEventListener("click", e => {
         gameManager.changeState(gameManager.states.RUNNING)
-    } else if (key.toUpperCase() == 'Q') {
-        frameRate(144)
-        startGame(20)
-    } else if (key.toUpperCase() == 'N') {
-        gameManager.changeState(gameManager.states.RUNNING)
-        frameRate(0)
         redraw()
-    }
+        stopSimulation(play)
+
+    })
+
+    clearBoard.addEventListener("click", e => {
+        stopSimulation(play)
+        startGame(board.size)
+    })
+
+    let sliderSpeed = document.getElementById("speed")
+
+    sliderSpeed.addEventListener("input", e => {
+        if (gameManager.state == gameManager.states.RUNNING) {
+            frameRate(int(sliderSpeed.value))
+        }
+    })
+
+}
+
+function stopSimulation() {
+    let play = document.getElementById("play") // We define it here because we need to call it from draw()
+    play.innerText = "Click to simulate"
+    play.style.color = "#346751"
+    frameRate(1000)
+    gameManager.changeState(gameManager.states.PAUSED)
+}
+
+function playToInitial(play) {
 
 }
 
 function startGame(cellSize) {
-    let dimensions = boardDimensions(cellSize)
+    let marginPercentage = 0.75
+    let dimensions = boardDimensions(cellSize, marginPercentage)
     let canvas = createCanvas(dimensions.x * cellSize, dimensions.y * cellSize)
     let x = (windowWidth - width) / 2
-    canvas.position(x, canvas.y)
+    canvasY = canvasY ? canvasY : canvas.position().y * marginPercentage
+    canvas.position(x, canvasY)
     board = new Board(dimensions.x, dimensions.y, cellSize)
     gameManager = new GameManager()
-
 }
 
-function boardDimensions(cellSize) {
-    let marginPercentage = 0.75
+function boardDimensions(cellSize, marginPercentage) {
     let columns = windowWidth * marginPercentage / cellSize
     let rows = windowHeight * marginPercentage / cellSize
 

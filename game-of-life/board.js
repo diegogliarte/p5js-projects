@@ -25,6 +25,9 @@ class Board {
                 cell.update(this.cells, toUpdate)
             }
         }
+        if (toUpdate.length == 0) {
+            return false // We can stop the simulation
+        }
 
         for (let cell of toUpdate) {
             if (cell[1]) {
@@ -33,6 +36,7 @@ class Board {
                 cell[0].die()
             }
         }
+        return true
     }
 
     drawCells() {

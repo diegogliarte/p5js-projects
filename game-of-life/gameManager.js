@@ -5,11 +5,12 @@ class GameManager {
             PAUSED: 1,
         }
         this.state = this.states.PAUSED
-
     }
 
     changeState(state) {
         this.state = state
     }
+
+
 
 }

@@ -24,3 +24,38 @@ canvas {
     font-size: 32px;
     font-family: "Encode Sans SC", serif;
 }
+
+#secondary-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+
+#play, #next-frame, #clear-board {
+    cursor: pointer;
+}
+
+#play {
+    color: #346751
+}
+
+#speed {
+    -webkit-appearance: none;
+    background-color: var(--white);
+    border-radius: 1000px;
+    width: 256px;
+    height: 15px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#speed::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: var(--black);
+    cursor: pointer;
+    -webkit-appearance: none;
+}
