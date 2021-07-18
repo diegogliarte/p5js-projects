@@ -43,15 +43,13 @@ function draw() {
                 break
             }
 
-            stroke("#DDDDDD")
             textAlign(CENTER)
             textSize(64)
-
             if (gameManager.state == gameManager.states.WON) {
-                fill("#346751")
+                fill("#222831")
                 text("You win", width / 2, height / 2)
             } else {
-                fill("#F05454")
+                fill("#222831")
                 text("You lose", width / 2, height / 2)
             }
 
@@ -107,9 +105,21 @@ function listeners() {
     let easy = document.getElementById("easy")
     let medium = document.getElementById("medium")
     let hard = document.getElementById("hard")
-    easy.addEventListener("click", e => {if (gameManager.state == gameManager.states.PLAYING){startGame(difficulties.EASY)}})
-    medium.addEventListener("click", e => {if (gameManager.state == gameManager.states.PLAYING){startGame(difficulties.MEDIUM)}})
-    hard.addEventListener("click", e => {if (gameManager.state == gameManager.states.PLAYING){startGame(difficulties.HARD)}})
+    easy.addEventListener("click", e => {
+        if (gameManager.state == gameManager.states.PLAYING) {
+            startGame(difficulties.EASY)
+        }
+    })
+    medium.addEventListener("click", e => {
+        if (gameManager.state == gameManager.states.PLAYING) {
+            startGame(difficulties.MEDIUM)
+        }
+    })
+    hard.addEventListener("click", e => {
+        if (gameManager.state == gameManager.states.PLAYING) {
+            startGame(difficulties.HARD)
+        }
+    })
 }
 
 function isInside(x, y) {
