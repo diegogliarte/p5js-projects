@@ -51,6 +51,25 @@ function keyPressed() {
     }
 }
 
+function swiped() {
+    print("swiped")
+}
+
+function touchStarted() {
+    mouseStarted = createVector(mouseX, mouseY)
+}
+
+function touchEnded() {
+    mouseEnded = createVector(mouseX, mouseY)
+    let swipe = mouseEnded.sub(mouseStarted)
+    if (abs(swipe.x) > abs(swipe.y)) { // Horizontal swipe
+        gameManager.pendingKeyCode = swipe.x > 0 ? 39 : 37
+    } else { // Vertical swipe
+        gameManager.pendingKeyCode = swipe.y > 0 ? 40 : 38
+    }
+
+}
+
 
 function startGame() {
     gameManager = new GameManager()
