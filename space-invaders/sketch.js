@@ -83,7 +83,6 @@ function mouseClicked() {
     }
 }
 
-
 function keyPressed() {
     if (key == " " && player.canShoot) {
         player.canShoot = false
