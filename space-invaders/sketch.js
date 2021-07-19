@@ -16,8 +16,15 @@ function draw() {
     }
 
     if (gameManager.state != gameManager.states.LOST) {
+        if (mouseIsPressed && mouseX < 0) {
+            player.input(forceLeft = true)
+        } else if (mouseIsPressed && mouseX > width) {
+            print("right")
+            player.input(forceLeft = false, forceRight = true)
+        } else {
+            player.input()
+        }
         player.draw()
-        player.input()
     }
 
     switch (gameManager.state) {
@@ -68,6 +75,14 @@ function updateProjectile() {
     player.projectileDraw()
     player.projectileCollisioned(invasion)
 }
+
+
+function mouseClicked() {
+    if (player.canShoot && mouseX >= 0 && mouseX < width) {
+        player.canShoot = false
+    }
+}
+
 
 function keyPressed() {
     if (key == " " && player.canShoot) {

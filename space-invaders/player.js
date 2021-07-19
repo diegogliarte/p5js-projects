@@ -19,10 +19,10 @@ class Player {
         rect(this.x + this.width / 2.5, this.y - this.height + 1, this.height, this.height)
     }
 
-    input() {
-        if (keyIsDown(LEFT_ARROW)) {
+    input(forceLeft=false, forceRight=false) {
+        if (keyIsDown(LEFT_ARROW) || forceLeft) {
             this.move(-1)
-        } else if (keyIsDown(RIGHT_ARROW)) {
+        } else if (keyIsDown(RIGHT_ARROW) || forceRight) {
             this.move(1)
         }
     }
