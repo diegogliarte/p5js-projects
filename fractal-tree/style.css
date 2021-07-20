@@ -1,0 +1,42 @@
+:root {
+    --black: #222831;
+    --white: #DDDDDD;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--black);
+}
+
+#main-container {
+    font-variant-numeric: tabular-nums;
+    margin: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    color: var(--white);
+    font-size: 64px;
+    font-family: "Encode Sans SC", serif;
+}
+
+span {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+
+}
+
+#less, #more {
+    cursor: pointer;
+}
+
+#more {
+    color: #346751;
+}
+
+#less {
+    color: #F05454;
+}
+
