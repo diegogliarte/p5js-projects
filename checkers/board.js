@@ -12,6 +12,11 @@ class Board {
             'G': "#346751",
             'R': "#F05454",
         }
+        this.directions = {
+            UP: [createVector(-1, -1), createVector(1, -1)],
+            DOWN: [createVector(-1, 1), createVector(1, 1)],
+        }
+        this.hasEaten = false
 
     }
 
@@ -19,7 +24,7 @@ class Board {
         let board = [
             [" ", "R", " ", "R", " ", "R", " ", "R"],
             ["R", " ", "R", " ", "R", " ", "R", " "],
-            [" ", "R", " ", "R", " ", "R", " ", "R"],
+            [" ", "QR", " ", "R", " ", "R", " ", "R"],
             [" ", " ", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", " ", " "],
             ["G", " ", "G", " ", "G", " ", "G", " "],
@@ -27,17 +32,29 @@ class Board {
             ["G", " ", "G", " ", "G", " ", "G", " "],
 
         ]
-//     let board = [
-//               [" ", " ", " ", " ", " ", " ", " ", " "], 
-//               [" ", " ", " ", " ", " ", " ", " ", " "],
-//               [" ", " ", " ", " ", " ", " ", " ", " "],
-//               [" ", " ", " ", " ", " ", " ", " ", " "],
-//               [" ", " ", " ", "R", " ", " ", " ", " "],
-//               [" ", " ", " ", " ", " ", " ", " ", " "],
-//               [" ", " ", " ", " ", " ", "G", " ", " "],
-//               [" ", " ", " ", " ", " ", " ", " ", " "],
+        board = [
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "G", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "R", " ", "R", " "],
+            [" ", " ", " ", "G", " ", " ", " ", " "],
+            [" ", " ", "R", " ", "R", " ", "R", " "],
+            [" ", "R", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
 
-//     ]
+        ]
+
+        board = [
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "G", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", "R", " "],
+            [" ", " ", " ", "R", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "R", " ", "R", " "],
+            [" ", "QG", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " "],
+
+        ]
 
         return board
     }
@@ -45,13 +62,14 @@ class Board {
     drawBoard() {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.columns; j++) {
+                let position = createVector(j, i)
                 stroke("#222831")
                 noFill()
                 rect(j * this.width, i * this.height, this.width, this.height)
                 noStroke()
-                if (this.board[i][j] == 'R') {
+                if (this.isRed(position)) {
                     fill("#F05454")
-                } else if (this.board[i][j] == 'G') {
+                } else if (this.isGreen(position)) {
                     fill("#346751")
                 } else {
                     noFill()
@@ -65,7 +83,7 @@ class Board {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.columns; j++) {
                 let pos = createVector(j, i)
-                if (this.getSymbol(pos) != ' ' && this.getSymbol(pos) != this.gameManager.turn()) {
+                if (!this.isEmpty(pos) && (this.gameManager.turn() == 'R' && this.isGreen(pos) || this.gameManager.turn() == 'G' && this.isRed(pos))) {
                     return false
                 }
             }
@@ -75,28 +93,61 @@ class Board {
 
 
     drawChecker(position) {
-        let x = position.x * this.width + this.width / 2
-        let y = position.y * this.height + this.height / 2
-        circle(x, y, this.width * 0.65)
+        let x, y
+        [x, y] = this.getDrawCoordinates(position)
+        let size = this.width * 0.65
+        circle(x, y, size)
+        imageMode(CENTER)
+        if (this.isQueen(position)) {
+            this.drawQueen(x, y)
+        }
+    }
+
+    drawQueen(x, y) {
+        image(queen, x, y)
+    }
+
+    getDrawCoordinates(position) {
+        return [position.x * this.width + this.width / 2, position.y * this.height + this.height / 2]
     }
 
     move(to) {
+        this.hasEaten = false
         if (to.dist(this.selected) > 2) {
-            let direction = p5.Vector.sub(to, this.selected).div(2)
+            let direction = this.normalize(p5.Vector.sub(to, this.selected))
             let middle = p5.Vector.sub(to, direction)
+            if (this.isRed(middle) || this.isGreen(middle)) {
+                this.hasEaten = true
+            }
             this.changeBoard(middle, " ")
         }
-        this.changeBoard(this.selected, " ")
         let symbol = this.gameManager.turn()
-        this.changeBoard(to, symbol)
+        this.changeBoard(to, this.getSymbol(this.selected))
+        this.changeBoard(this.selected, " ")
         this.validMoves = []
-        if (this.checkWin() || this.boardLimit(to)) {
+        if (this.boardLimit(to)) {
+            this.promoteToQueen(to)
+        }
+        if (this.checkWin()) {
             this.gameManager.winner = this.gameManager.turn()
             this.gameManager.changeState(this.gameManager.states.WON)
             this.gameManager.updateTime()
+        } else if (this.hasEaten) {
+            this.select(to)
+            if (this.validMoves.length == 0) {
+                this.hasEaten = false
+                this.gameManager.nextTurn()
+            }
         } else {
             this.gameManager.nextTurn()
         }
+    }
+
+
+    normalize(vector) {
+        let x = vector.x > 0 ? 1 : -1
+        let y = vector.y > 0 ? 1 : -1
+        return createVector(x, y)
     }
 
     boardLimit(pos) {
@@ -112,21 +163,51 @@ class Board {
     generateValidMoves(from) {
         let validMoves = []
         let directions = []
-        if (this.getSymbol(from) == 'G') { // Down
-            directions = [createVector(-1, -1), createVector(1, -1)]
-        } else if (this.getSymbol(from) == 'R') {
-            directions = [createVector(-1, 1), createVector(1, 1)]
+
+        if (this.isQueen(from)) {
+            this.generateQueenMoves(from)
+            return
+        } else if (this.hasEaten) {
+            directions = this.directions.UP.concat(this.directions.DOWN)
+            return
+        } else if (this.isGreen(from)) {
+            directions = this.directions.UP
+        } else if (this.isRed(from)) {
+            directions = this.directions.DOWN
         }
         for (let direction of directions) {
             let move = p5.Vector.add(from, direction)
             if (isInside(move)) {
-                if (this.getSymbol(move) == " ") {
-                    validMoves.push(move)
-                } else if (this.getSymbol(move) != this.getSymbol(from)) {
-                    move.add(direction)
-                    if (isInside(move) && this.getSymbol(move) == " ") {
+                if (this.isEmpty(move)) {
+                    if (!this.hasEaten) {
                         validMoves.push(move)
                     }
+                } else if (this.getSymbol(move) != this.getSymbol(from)) {
+                    move.add(direction)
+                    if (isInside(move) && this.isEmpty(move)) {
+                        validMoves.push(move)
+                    }
+                }
+            }
+        }
+        this.validMoves = validMoves
+    }
+
+    generateQueenMoves(from) {
+        let directions = this.directions.UP.concat(this.directions.DOWN)
+        let validMoves = []
+        for (let direction of directions) {
+            let move = p5.Vector.add(from, direction)
+            while (isInside(move) && this.isEmpty(move)) {
+                if (!this.hasEaten) {
+                    validMoves.push(move.copy())
+                }
+                move.add(direction)
+            }
+            if (isInside(move) && !this.isSameColor(from, move)) {
+                move.add(direction)
+                if (isInside(move) && this.isEmpty(move)) {
+                    validMoves.push(move.copy())
                 }
             }
         }
@@ -142,6 +223,38 @@ class Board {
         return this.board[position.y][position.x]
     }
 
+    isEmpty(position) {
+        let symbol = this.getSymbol(position)
+        return symbol == " "
+    }
+
+    isGreen(position) {
+        let symbol = this.getSymbol(position)
+        return symbol.includes('G')
+    }
+
+    isRed(position) {
+        let symbol = this.getSymbol(position)
+        return symbol.includes('R')
+    }
+
+    isQueen(position) {
+        let symbol = this.getSymbol(position)
+        return symbol.includes('Q')
+    }
+
+    isSameColor(pos1, pos2) {
+        let symbol1 = this.getSymbol(pos1)
+        let symbol2 = this.getSymbol(pos2)
+        return symbol1.replace("Q", "") == symbol2.replace("Q", "")
+    }
+
+    promoteToQueen(position) {
+        if (!this.isQueen(position)) {
+            this.board[position.y][position.x] += 'Q'
+        }
+    }
+
     drawSelected() {
         for (let move of this.validMoves) {
             let c = color(this.colors[this.gameManager.turn()])
@@ -149,7 +262,14 @@ class Board {
             noStroke()
             fill(c)
             this.drawChecker(move)
-
+            if (this.isQueen(this.selected)) {
+                let x, y
+                [x, y] = this.getDrawCoordinates(move)
+                push()
+                tint(255, 100)
+                this.drawQueen(x, y)
+                pop()
+            }
         }
     }
 

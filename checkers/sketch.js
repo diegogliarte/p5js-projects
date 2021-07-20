@@ -1,3 +1,7 @@
+function preload() {
+    queen = loadImage("queen.png")
+}
+
 function setup() {
     let canvas = createCanvas(500, 500)
     let x = (windowWidth - width) / 2
@@ -14,11 +18,12 @@ function draw() {
     background("#DDDDDD")
     board.drawBoard()
     board.drawSelected()
+    drawCursor()
     if (gameManager.state == gameManager.states.WON) {
         fill("#222831")
         let message = gameManager.winner == 'G' ? "Green Wins" : "Red Wins"
         text(message, width / 2, height / 2)
-        if (millis() - gameManager.time > 1500) {
+        if (millis() - gameManager.time > 2000) {
             startGame()
         }
     }
@@ -27,8 +32,6 @@ function draw() {
 function startGame() {
     gameManager = new GameManager()
     board = new Board(gameManager)
-    player = new Player()
-    ai = new AI()
 }
 
 function mousePressed() {
@@ -40,8 +43,10 @@ function mousePressed() {
     let mousePos = createVector(indexX, indexY)
     if (vectorIncludes(board.validMoves, mousePos)) {
         board.move(mousePos)
-    } else if (board.selected != mousePos && isInside(mousePos) && gameManager.turn() == board.getSymbol(mousePos)) {
-        board.select(mousePos)
+    } else if (board.selected != mousePos && isInside(mousePos) && !board.isEmpty(mousePos)) {
+        if (gameManager.turn() == 'G' && board.isGreen(mousePos) || gameManager.turn() == 'R' && board.isRed(mousePos)) {
+            board.select(mousePos)
+        }
     } else {
         board.deselect()
     }
@@ -58,4 +63,15 @@ function vectorIncludes(vectors, includes) {
         }
     }
     return false
+}
+
+function drawCursor() {
+    noCursor()
+    stroke("#222831")
+    if (gameManager.turn() == 'G' || gameManager.winner == 'G') {
+        fill("#346751")
+    } else {
+        fill("#F05454")
+    }
+    circle(mouseX, mouseY, 10)
 }
