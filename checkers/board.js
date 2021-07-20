@@ -24,7 +24,7 @@ class Board {
         let board = [
             [" ", "R", " ", "R", " ", "R", " ", "R"],
             ["R", " ", "R", " ", "R", " ", "R", " "],
-            [" ", "QR", " ", "R", " ", "R", " ", "R"],
+            [" ", "R", " ", "R", " ", "R", " ", "R"],
             [" ", " ", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", " ", " "],
             ["G", " ", "G", " ", "G", " ", "G", " "],
@@ -127,7 +127,7 @@ class Board {
     }
 
     boardLimit(pos) {
-        return pos.y == 0 || pos.y == this.rows - 1
+        return this.gameManager.turn() == 'G' && pos.y == 0 || this.gameManager.turn() == 'R' && pos.y == this.rows - 1
     }
 
 
