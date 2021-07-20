@@ -34,27 +34,27 @@ class Board {
         ]
         board = [
             [" ", " ", " ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", "G", " "],
+            [" ", " ", " ", " ", " ", " ", "R", " "],
             [" ", " ", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", "R", " ", "R", " "],
             [" ", " ", " ", "G", " ", " ", " ", " "],
-            [" ", " ", "R", " ", "R", " ", "R", " "],
+            [" ", " ", "R", " ", "R", " ", "QG", " "],
             [" ", "R", " ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " ", " ", " "],
 
         ]
 
-        board = [
-            [" ", " ", " ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", "G", " "],
-            [" ", " ", " ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", "R", " "],
-            [" ", " ", " ", "R", " ", " ", " ", " "],
-            [" ", " ", " ", " ", "R", " ", "R", " "],
-            [" ", "QG", " ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " ", " ", " "],
-
-        ]
+        // board = [
+        //     [" ", " ", " ", " ", " ", " ", " ", " "],
+        //     [" ", " ", " ", " ", " ", " ", "R", " "],
+        //     [" ", " ", " ", " ", " ", " ", " ", " "],
+        //     [" ", " ", " ", " ", " ", " ", "R", " "],
+        //     [" ", " ", " ", "R", " ", " ", " ", " "],
+        //     [" ", " ", " ", " ", "R", " ", "R", " "],
+        //     [" ", "QG", " ", " ", " ", " ", " ", " "],
+        //     [" ", " ", " ", " ", " ", " ", " ", " "],
+        //
+        // ]
 
         return board
     }
@@ -163,13 +163,12 @@ class Board {
     generateValidMoves(from) {
         let validMoves = []
         let directions = []
-
+        print("generating from", from)
         if (this.isQueen(from)) {
             this.generateQueenMoves(from)
             return
         } else if (this.hasEaten) {
             directions = this.directions.UP.concat(this.directions.DOWN)
-            return
         } else if (this.isGreen(from)) {
             directions = this.directions.UP
         } else if (this.isRed(from)) {
@@ -182,7 +181,7 @@ class Board {
                     if (!this.hasEaten) {
                         validMoves.push(move)
                     }
-                } else if (this.getSymbol(move) != this.getSymbol(from)) {
+                } else if (!this.isSameColor(from, move)) {
                     move.add(direction)
                     if (isInside(move) && this.isEmpty(move)) {
                         validMoves.push(move)
