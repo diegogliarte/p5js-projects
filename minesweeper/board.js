@@ -69,8 +69,8 @@ class Board {
         textSize(20)
         for (let i = 0; i < this.gameManager.rows; i++) {
             for (let j = 0; j < this.gameManager.columns; j++) {
-                fill("white")
-                stroke("black")
+                fill("#DDDDDD")
+                stroke("#222831")
                 rect(j * this.gameManager.cellSize, i * this.gameManager.cellSize, this.gameManager.cellSize)
                 let symbol = this.board[i][j]
                 if (symbol == 'B') {
