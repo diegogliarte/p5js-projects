@@ -41,7 +41,7 @@ function draw() {
     }
 }
 
-function mousePressed() {
+function mouseClicked() {
     let indexX = floor(mouseX / (width / board.columns))
     let indexY = floor(mouseY / (height / board.rows))
     if (gameManager.state != gameManager.states.WON && isInside(indexX, indexY) && board.canPlace(indexX)) {
@@ -51,7 +51,6 @@ function mousePressed() {
             gameManager.changeState(gameManager.states.WON)
             gameManager.updateTime(2000)
         } else if (board.checkDraw()) {
-            print("draw")
             gameManager.changeState(gameManager.states.DRAW)
             gameManager.updateTime(2000)
         } else {

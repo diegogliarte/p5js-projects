@@ -82,7 +82,6 @@ class Board {
     }
 
     checkWin(x, y) {
-        // print("checking", x, y)
         return this.checkHorizontal(y) || this.checkVertical(x) || this.checkDiagonals(x, y)
     }
 
