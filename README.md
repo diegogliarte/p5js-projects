@@ -1,4 +1,4 @@
-# p5.js games
+# p5.js Projects
 
 Basic minigames solely crated with p5.js, a graphic library for JavaScript for drawing shapes. No Google searches were made to create the various games' logic, all of them were created by me from scratch.
 
