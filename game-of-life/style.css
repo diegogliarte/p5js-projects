@@ -1,17 +1,3 @@
-:root {
-    --black: #222831;
-    --white: #DDDDDD;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--black)
-}
-
-canvas {
-    display: block;
-}
 
 #main-container {
     top: 100px;
@@ -38,7 +24,7 @@ canvas {
 }
 
 #play {
-    color: #346751
+    color: var(--green);
 }
 
 #speed {

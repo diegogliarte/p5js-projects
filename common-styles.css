@@ -1,6 +1,9 @@
 :root {
     --black: #222831;
     --white: #DDDDDD;
+    --green: #346751;
+    --red: #F05454;
+    --orange: #925E53;
 }
 
 html, body {
@@ -10,5 +13,6 @@ html, body {
 }
 
 canvas {
-  display: block;
+    display: block;
+    margin: 1rem;
 }

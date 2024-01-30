@@ -1,13 +1,4 @@
-:root {
-    --black: #222831;
-    --white: #DDDDDD;
-}
 
-html, body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--black);
-}
 
 #main-container {
     font-variant-numeric: tabular-nums;
@@ -33,10 +24,10 @@ span {
 }
 
 #more {
-    color: #346751;
+    color: var(--green);
 }
 
 #less {
-    color: #F05454;
+    color: var(--red);
 }
 

@@ -6,7 +6,7 @@ function setup() {
 }
 
 function draw() {
-    background(200)
+    background("#DDDDDD")
     switch (gameManager.state) {
         case gameManager.states.RUNNING:
             if(!board.updateCells()) {
