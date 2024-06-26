@@ -26,6 +26,6 @@ The games were created using:
 - HTML5 & CSS3 for structure and styling.
 
 ## 🌐 Deployment
-My minigame collection is live and ready for you to play! Check it out here: [Diego's p5.js Projects](https://diegogliarte.github.io/p5js-projects/)
+My minigame collection is live and ready for you to play! Check it out here: [Diego's p5.js Projects](https://p5js.diegogliarte.com/)
 
 
